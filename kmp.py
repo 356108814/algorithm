@@ -44,6 +44,7 @@ class KMP(object):
             return -1
 
     def get_next_array(self, p):
+        # next_array第0位默认为-1
         next_array = [-1]
         p_len = len(p)
         k = -1
