@@ -1,4 +1,6 @@
 # coding: utf-8
+import math
+from typing import List
 
 
 class Sort(object):
@@ -34,7 +36,7 @@ class Sort(object):
             current = inputs[i]
             j = i - 1
             while j >= 0 and inputs[j] > current:
-                inputs[j + 1] = inputs[j]
+                inputs[j + 1] = inputs[j]  # 已排序的后移l
                 j -= 1
             inputs[j + 1] = current
         return inputs
@@ -56,6 +58,80 @@ class Sort(object):
             inputs[min_index] = tmp
         return inputs
 
+    def merge_sort(self, inputs):
+        """
+        归并排序
+        """
+        length = len(inputs)
+        if length == 1:  # 不能再分了，直接返回，否则死循环
+            return inputs
+        mid = math.floor(length / 2)
+        left = self.merge_sort(inputs[0: mid])
+        right = self.merge_sort(inputs[mid:])
+        return self.merge(left, right)
+
+    def merge(self, left, right):
+        """合并2个数组合并为一个有序的数组"""
+        result = []
+        i, j = 0, 0
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+        # 将未比较处理的数据加入数组末尾
+        result += left[i:]
+        result += right[j:]
+        return result
+
+    def quick_sort(self, inputs: List[int]):
+        """快速排序"""
+        return self.quick_sort_c(inputs, 0, len(inputs) - 1)
+
+    def quick_sort_c(self, inputs: List[int], low: int, high: int):
+        """
+        递归排序
+        :param inputs:
+        :param low: 最小下标
+        :param high: 最大下标
+        :return:
+        """
+        if low < high:
+            m = self.partition(inputs, low, high)
+            self.quick_sort_c(inputs, low, m - 1)
+            self.quick_sort_c(inputs, m + 1, high)
+        return inputs
+
+    def partition(self, inputs: List[int], low: int, high: int):
+        """快排分区函数，为了使快排是原地排序算法，空间复杂度为O(1)"""
+        pivot, j = inputs[low], low
+        for i in range(low + 1, high + 1):
+            if inputs[i] <= pivot:
+                j += 1
+                inputs[j], inputs[i] = inputs[i], inputs[j]
+        inputs[low], inputs[j] = inputs[j], inputs[low]
+        return j
+
+    def quick_sort2(self, inputs: List[int], left: int, right: int):
+        if left >= right:
+            return inputs
+        pivot = inputs[left]
+        low = left
+        high = right
+        while left < right:
+            while left < right and inputs[right] >= pivot:
+                right -= 1
+            inputs[left] = inputs[right]
+            while left < right and inputs[left] <= pivot:
+                left += 1
+            inputs[right] = inputs[left]
+        inputs[right] = pivot
+        self.quick_sort2(inputs, low, left - 1)
+        self.quick_sort2(inputs, left + 1, high)
+        return inputs
+
 
 if __name__ == '__main__':
     sort = Sort()
@@ -63,5 +139,7 @@ if __name__ == '__main__':
     print(inputs)
     # sorted_list = sort.bubble_sort(inputs)
     # sorted_list = sort.insert_sort2(inputs)
-    sorted_list = sort.select_sort(inputs)
+    # sorted_list = sort.select_sort(inputs)
+    sorted_list = sort.quick_sort(inputs)
+    sorted_list = sort.quick_sort2(inputs, 0, len(inputs) - 1)
     print(sorted_list)
