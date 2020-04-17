@@ -13,29 +13,14 @@ from typing import List
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         dist = []
-        length = len(intervals)
-        i = 0
-        while i < length:
-            a = intervals[i]
-            can_merge = False
-            for j in range(i + 1, length):
-                b = intervals[j]
-                if a[0] >= b[0] and a[0] <= b[1]:
-                    # 可合并
-                    dist.append([b[0], a[1]])
-                    can_merge = True
-                    break
-                elif b[0] >= a[0] and b[0] <= a[1]:
-                    dist.append([a[0], b[1]])
-                    can_merge = True
-                    break
-                else:
-                    pass
-            if not can_merge:
-                dist.append(a)
-                i += 1
+        # 先按元素升序排序
+        intervals.sort(key = lambda x: x[0])
+        for interval in intervals:
+            # dist的最后一个元素的右端点 < interval左端点，即不会重合，直接加入目标dist
+            if not dist or dist[-1][1] < interval[0]:
+                dist.append(interval)
             else:
-                i = j + 1
+                dist[-1][1] = max(dist[-1][1], interval[1])
         return dist
 
 
