@@ -9,7 +9,7 @@ class Solution:
     def reverse(self, x: int) -> int:
         """
         1.数值范围
-        2.python中//向下取整
+        2.python中x//n当x为负数时，结果向下取整
         3.负数%问题，-123 % 10 结果为7，而不是3
         """
         # -2147483648 < x < 2147483647
