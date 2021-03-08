@@ -13,6 +13,20 @@
 #         self.right = right
 class Solution:
     def inorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        res = []
+        stack = []
+        while root or stack:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            res.append(root.val)
+            root = root.right
+        return res
+
+    def inorderTraversal2(self, root: TreeNode) -> List[int]:
 
         def dfs(node: TreeNode, res: List[int]):
             if node.left:
