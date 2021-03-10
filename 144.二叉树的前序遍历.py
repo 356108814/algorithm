@@ -12,16 +12,17 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def preorderTraversa(self, root: TreeNode) -> List[int]:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
         res = []
         stack = []
-        while root or stack:
-            while root:
-                res.append(root.val)
-                stack.append(root)
-                root = root.left
-            root = stack.pop()
-            root = root.right
+        node = root
+        while node or stack:
+            while node:
+                res.append(node.val)
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            node = node.right
         return res
 
     def preorderTraversal2(self, root: TreeNode) -> List[int]:

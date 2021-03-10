@@ -1,0 +1,77 @@
+#
+# @lc app=leetcode.cn id=103 lang=python3
+#
+# [103] 二叉树的锯齿形层序遍历
+#
+
+# @lc code=start
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        return self.solution2(root)
+
+    def solution1(self, root: TreeNode) -> List[List[int]]:
+        """
+        思路：先得到层序遍历的结果，再对结果里的元素隔一反转
+        """
+        if not root:
+            return []
+        res = []
+        q = [root]
+        while q:
+            tmp = []
+            res.append(tmp)
+            n = len(q)
+            for i in range(n):
+                node = q.pop(0)
+                tmp.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+        
+        for x in range(len(res)):
+            if x % 2 == 1:
+                res[x].reverse()
+
+        return res
+
+    def solution2(self, root: TreeNode) -> List[List[int]]:
+        """
+        TODO 优化
+        """
+        if not root:
+            return []
+        res = []
+        q = [root]
+        level = 0
+        while q:
+            tmp = []
+            res.append(tmp)
+            n = len(q)
+            if level % 2 == 1:
+                for i in range(n):
+                    node = q.pop()
+                    tmp.append(node.val)
+                    if node.right:
+                        q.insert(0, node.right)
+                    if node.left:
+                        q.insert(0, node.left)
+            else:
+                for i in range(n):
+                    node = q.pop(0)
+                    tmp.append(node.val)
+                    if node.left:
+                        q.append(node.left)
+                    if node.right:
+                        q.append(node.right)
+            level += 1
+        return res
+
+# @lc code=end
+
