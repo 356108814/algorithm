@@ -42,35 +42,27 @@ class Solution:
         return res
 
     def solution2(self, root: TreeNode) -> List[List[int]]:
-        """
-        TODO 优化
-        """
+        """正常层序遍历，按层的遍历方向再特殊处理"""
         if not root:
             return []
         res = []
         q = [root]
-        level = 0
+        is_order_left = True
         while q:
             tmp = []
             res.append(tmp)
             n = len(q)
-            if level % 2 == 1:
-                for i in range(n):
-                    node = q.pop()
+            for i in range(n):
+                node = q.pop(0)
+                if is_order_left:
                     tmp.append(node.val)
-                    if node.right:
-                        q.insert(0, node.right)
-                    if node.left:
-                        q.insert(0, node.left)
-            else:
-                for i in range(n):
-                    node = q.pop(0)
-                    tmp.append(node.val)
-                    if node.left:
-                        q.append(node.left)
-                    if node.right:
-                        q.append(node.right)
-            level += 1
+                else:
+                    tmp.insert(0, node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            is_order_left = not is_order_left
         return res
 
 # @lc code=end
